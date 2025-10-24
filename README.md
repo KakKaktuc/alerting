@@ -5,7 +5,6 @@
 urls:
   - https://google.com
   - https://youtube.com
-interval: 60s
 telegram_token: "Token"
 telegram_chat_id: "<chatID>"
 ```
