@@ -2,32 +2,33 @@ package config
 
 import (
 	"os"
-	"fmt"
+	"log"
+	"path/filepath"
+	"alerting/internal/models"
 	"gopkg.in/yaml.v3"
 )
 
-type TelegramConfig struct {
-	APIKey string `yaml:"telegram_token"`
-	ChatID string `yaml:"telegram_chat_id"`
+var Cfg *models.Config
+
+func Init() {
+    LoadConfig("internal/config/config.yaml")
 }
 
-var AppConfig *TelegramConfig
+func LoadConfig(path string) {
+    absPath, err := filepath.Abs(path)
+    if err != nil {
+        log.Fatalf("Ошибка при обработке пути: %v", err)
+    }
 
-func Init() error {
-	data, err := os.ReadFile("config.yaml")
+	data, err := os.ReadFile(absPath)
 	if err != nil {
-		return fmt.Errorf("failed to read config file: %w", err)
+		log.Fatalf("Ошибка чтения файла конфигурации: %v", err)
 	}
 
-	var config TelegramConfig
-	err = yaml.Unmarshal(data, &config)
-	if err != nil {
-		return fmt.Errorf("failed to parse YAML: %w", err)
+	var cfg models.Config
+	if err := yaml.Unmarshal(data, &cfg); err != nil {
+		log.Fatalf("Ошибка парсинга YAML: %v", err)
 	}
-	AppConfig = &config
-	return nil
-}
 
-func Get() *TelegramConfig {
-	return AppConfig
+	Cfg = &cfg
 }
