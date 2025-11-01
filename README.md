@@ -1,11 +1,2 @@
 # alerting
-В папку internal/config нужно добавить файл `config.yaml` в котором нужно указать ссылки 
-примерный формат файла:
-```
-urls:
-  - https://google.com
-  - https://youtube.com
-interval: 60s
-telegram_token: "Token"
-telegram_chat_id: "<chatID>"
-```
+В файл .env в корне проекта необходимо добавить строку TELEGRAM_TOKEN=<token>, где <token> - токен от телеграм бота
