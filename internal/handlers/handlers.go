@@ -88,3 +88,14 @@ func ClearURLs(chatID int64) {
 	delete(userMemory, chatID)
 	_ = saveMemory()
 }
+
+func GetAllURLs() map[int64][]string {
+	mu.Lock()
+	defer mu.Unlock()
+
+	copy := make(map[int64][]string)
+	for id, urls := range userMemory {
+		copy[id] = append([]string(nil), urls...)
+	}
+	return copy
+}

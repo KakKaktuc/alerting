@@ -11,7 +11,9 @@ import (
 
 func HandleUpdates() {
 	bot := InitBot()
-
+	handlers.InitMemory()
+	CheckServices(bot)
+	
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
@@ -44,7 +46,6 @@ func HandleUpdates() {
 				reply = handlers.Add(update.Message, args)
 			}
 		case "list":
-			handlers.InitMemory()
 			urls := handlers.GetURLs(update.Message.Chat.ID)
 			if len(urls) == 0 {
 				reply = "Ты ещё ничего не добавил 😅"

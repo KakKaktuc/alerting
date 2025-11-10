@@ -14,7 +14,7 @@ func InitBot() *tgbotapi.BotAPI {
 		log.Panic(err)
 	}
 	bot.Debug = true
-	log.Printf("Authorized on account: %s", bot)
+	log.Printf("Authorized on account: %v", bot)
 
 	return bot
 }

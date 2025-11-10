@@ -1,34 +1,24 @@
 package config
 
 import (
-	"os"
-	"log"
-	"path/filepath"
 	"alerting/internal/models"
-	"gopkg.in/yaml.v3"
+	"log"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
-var Cfg *models.Config
-
-func Init() {
-    LoadConfig("internal/config/config.yaml")
-}
-
-func LoadConfig(path string) {
-    absPath, err := filepath.Abs(path)
-    if err != nil {
-        log.Fatalf("Ошибка при обработке пути: %v", err)
-    }
-
-	data, err := os.ReadFile(absPath)
+func LoadConfig() *models.Config {
+	err := godotenv.Load()
 	if err != nil {
-		log.Fatalf("Ошибка чтения файла конфигурации: %v", err)
+		log.Println("Не удалось загрузить .env файл")
+	}
+	token := os.Getenv("TELEGRAM_TOKEN")
+	if token == "" {
+		log.Fatal("TELEGRAM_TOKEN не найден в .env")
 	}
 
-	var cfg models.Config
-	if err := yaml.Unmarshal(data, &cfg); err != nil {
-		log.Fatalf("Ошибка парсинга YAML: %v", err)
+	return &models.Config{
+		TelegramToken: token,
 	}
-
-	Cfg = &cfg
 }
